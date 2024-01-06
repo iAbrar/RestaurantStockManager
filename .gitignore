@@ -1,0 +1,41 @@
+# Laravel specific
+/vendor/
+/node_modules/
+/public/hot
+/public/storage
+/storage/*.key
+/storage/logs/
+/storage/framework/sessions/
+/storage/framework/cache/
+/storage/framework/views/
+/bootstrap/cache/
+.env
+
+# Laravel local development
+/public/build
+/.phpunit.result.cache
+
+# Docker volumes
+/mysql/  # If this directory contains persisted MySQL data, ignore it
+
+# Docker local development
+/docker/  # If this directory contains scripts and is not needed in the repo
+
+# Sensitive files and environment files
+.env.backup
+.env.*.local
+
+# IDE and editor directories
+/.idea/
+/.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Others
+/.vagrant/
+Homestead.json
+Homestead.yaml

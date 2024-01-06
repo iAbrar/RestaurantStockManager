@@ -1,0 +1,10 @@
+FROM composer:2
+
+ARG COMPOSER_USER
+ARG COMPOSER_GROUP
+
+
+ENV COMPOSER_USER=${USER:-defaultuser}
+ENV COMPOSER_GROUP=${GROUP:-defaultgroup}
+
+RUN adduser -g "${COMPOSER_GROUP}" -s /bin/sh -D ${COMPOSER_USER}

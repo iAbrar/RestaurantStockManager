@@ -1,0 +1,57 @@
+# PHP
+/.phpunit.cache
+.phpunit.result.cache
+
+# Node.js
+/node_modules/
+npm-debug.log
+yarn-error.log
+
+# Laravel
+/public/hot/
+/public/storage/
+/storage/*.key
+/vendor/
+.env
+.env.backup
+.env.production
+/storage/logs/
+/storage/framework/sessions/
+/storage/framework/cache/
+/storage/framework/views/
+/bootstrap/cache/
+
+# Docker volumes
+/mysql/  # MySQL data directory
+/src/vendor/  # Composer vendor directory inside your source folder
+/src/node_modules/  # Node modules directory inside your source folder
+/src/public/storage/  # Public storage directory inside your source folder
+/src/storage/  # Storage directory inside your source folder
+/src/bootstrap/cache/  # Cache directory inside your source folder
+
+# Docker Compose files (ignore if they contain sensitive information)
+# docker-compose.override.yml
+# docker-compose.yml
+
+# Dockerfiles (usually you want to keep these unless they contain sensitive data)
+# composer.dockerfile
+# nginx.dockerfile
+# php.dockerfile
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# IDE and editor files
+.idea/
+.vscode/
+.fleet/
+
+# Others
+.env.example
+/public/build/
+/public/mix-manifest.json
+/.php_cs.cache
+/.phpunit.result.cache
+Homestead.json
+Homestead.yaml
