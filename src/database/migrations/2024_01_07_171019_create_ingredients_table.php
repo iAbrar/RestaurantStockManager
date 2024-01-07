@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('stock_quantity', 8, 2);
-            $table->string('unit')->default(Ingredient::UNIT_GRAMS)->change();
+            $table->string('unit')->default(Ingredient::UNIT_GRAMS);
             $table->timestamps();
         });
     }
