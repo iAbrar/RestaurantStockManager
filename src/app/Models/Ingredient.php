@@ -9,6 +9,8 @@ class Ingredient extends Model
 {
     use HasFactory;
 
+    const UNIT_GRAMS = 'g';
+    const UNIT_MILLILITERS = 'ml';
     /**
      * The attributes that are mass assignable.
      *
@@ -16,8 +18,8 @@ class Ingredient extends Model
      */
     protected $fillable = [
         'name',
-        'stock_quantity', // Stored in grams
-        'unit'            // Unit for this ingredient (e.g., 'g', 'kg')
+        'stock_quantity',
+        'unit'            // Unit for this ingredient (e.g., 'g', 'ml')
     ];
 
     /**
