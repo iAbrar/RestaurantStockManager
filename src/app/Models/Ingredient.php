@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Decimal\Decimal;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,7 +19,7 @@ class Ingredient extends Model
      */
     protected $fillable = [
         'name',
-        'stock_quantity',
+        'stock_amount',
         'unit'            // Unit for this ingredient (e.g., 'g', 'ml')
     ];
 
@@ -27,18 +28,21 @@ class Ingredient extends Model
      */
     public function products()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class, 'ingredient_product')
+            ->withPivot('amount', 'unit')
+            ->withTimestamps();
     }
 
+
     /**
-     * Accessor to get the stock quantity in the specified unit.
+     * Accessor to get the stock amount in the specified unit.
      */
-    public function getFormattedQuantityAttribute()
+    public function getFormattedAmountAttribute()
     {
         if ($this->unit === 'kg') {
-            return ($this->stock_quantity / 1000) . ' kg'; // Convert to kilograms
+            return ($this->stock_amount / 1000) . ' kg'; // Convert to kilograms
         }
-        return $this->stock_quantity . ' g'; // Default is grams
+        return $this->stock_amount . ' g'; // Default is grams
     }
 
     /**
@@ -48,29 +52,29 @@ class Ingredient extends Model
      */
     public function isInStock()
     {
-        return $this->stock_quantity > 0;
+        return $this->stock_amount > 0;
     }
 
     /**
      * Reduce the stock quantity of the ingredient.
      *
-     * @param  int  $quantity
+     * @param decimal $amount
      * @return void
      */
-    public function reduceStock($quantity)
+    public function reduceStock($amount)
     {
-        $this->decrement('stock_quantity', $quantity);
+        $this->decrement('stock_amount', $amount);
     }
 
     /**
-     * Increase the stock quantity of the ingredient.
+     * Increase the stock $amount of the ingredient.
      *
-     * @param  int  $quantity
+     * @param decimal $amount
      * @return void
      */
-    public function increaseStock($quantity)
+    public function increaseStock($amount)
     {
-        $this->increment('stock_quantity', $quantity);
+        $this->increment('stock_amount', $amount);
     }
 
 }
