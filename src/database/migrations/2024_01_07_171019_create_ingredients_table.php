@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('ingredients', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('stock_quantity', 8, 2);
+            $table->decimal('stock_amount', 8, 2);
             $table->string('unit')->default(Ingredient::UNIT_GRAMS);
             $table->timestamps();
         });
