@@ -18,7 +18,6 @@ class OrderController extends Controller
         ]);
 
         // Start a database transaction
-        DB::beginTransaction();
 
         try {
             // Create a new order
@@ -34,7 +33,9 @@ class OrderController extends Controller
                     $totalAmountNeeded = $productData['quantity'] * $ingredient->pivot->amount;
 
                     if ($ingredient->stock_amount < $totalAmountNeeded) {
-                        throw new \Exception('Insufficient stock for ingredient: ' . $ingredient->name . '. Required: ' . $totalAmountNeeded . ', Available: ' . $ingredient->stock_amount);
+                        return response()->json([
+                            'message' => 'Failed to process the order due to insufficient stock',
+                        ], 422);
                     }
                 }
             }
@@ -59,8 +60,7 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback the transaction on error
             return response()->json([
-                'message' => 'Failed to process the order due to insufficient stock',
-                'error' => $e->getMessage()
+                'message' => $e->getMessage()
             ], 422);
         }
     }
