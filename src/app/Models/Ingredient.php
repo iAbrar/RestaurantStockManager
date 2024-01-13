@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Notifications\LowStockNotification;
 use Decimal\Decimal;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
+use Illuminate\Support\Facades\Log;
 
 class Ingredient extends Model
 {
@@ -20,7 +23,8 @@ class Ingredient extends Model
     protected $fillable = [
         'name',
         'stock_amount',
-        'unit'            // Unit for this ingredient (e.g., 'g', 'ml')
+        'unit',            // Unit for this ingredient (e.g., 'g', 'ml')
+        'is_notification_sent'
     ];
 
     /**
@@ -61,10 +65,29 @@ class Ingredient extends Model
      * @param decimal $amount
      * @return void
      */
-    public function reduceStock($amount)
+    public function reduceStock($quantityUsed)
     {
-        $this->decrement('stock_amount', $amount);
+        $this->stock_amount -= $quantityUsed;
+
+        $initialStock = config("ingredients.initial_stocks." . $this->name);
+        Log::info('Reducing stock', ['ingredient' => $this->name, 'new_stock_amount' => $this->stock_amount]);
+
+        if ($initialStock && $this->stock_amount < ($initialStock / 2) && !$this->is_notification_sent) {
+            $stockAlertEmail = env('STOCK_ALERT_EMAIL', 'default@example.com');
+            Log::info('Low stock, sending notification', ['ingredient' => $this->name]);
+
+            // Notify via the specified email
+            NotificationFacade::route('mail', $stockAlertEmail)
+                ->notify(new LowStockNotification($this));
+
+            $this->is_notification_sent = true;
+
+        }
+
+
+        $this->save();
     }
+
 
     /**
      * Increase the stock $amount of the ingredient.
